@@ -42,16 +42,13 @@ public class KhoanThuFramgent extends Fragment implements DatePickerDialog.OnDat
     private RecyclerView recyclerView;
     private AdapterKhoanThu adapterKhoanThu;
     private KhoanThuDao khoanThuDao;
-    private List<KhoanThu> khoanThuList = new ArrayList<>();
-
+    private List<KhoanThu> khoanThuList;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_khoan_thu_framgent, container, false);
         return view;
-
-
     }
 
     @Override
@@ -60,13 +57,17 @@ public class KhoanThuFramgent extends Fragment implements DatePickerDialog.OnDat
         onDateSetListener1 = this;
         recyclerView = view.findViewById(R.id.recyclerViewThu);
         khoanThuDao = new KhoanThuDao(getContext());
+        khoanThuList = new ArrayList<>();
         try {
             khoanThuList = khoanThuDao.getAllKhoanThu();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        adapterKhoanThu = new AdapterKhoanThu(getContext(), (ArrayList<KhoanThu>) khoanThuList);
+        adapterKhoanThu = new AdapterKhoanThu(getContext(), khoanThuList);
         recyclerView.setAdapter(adapterKhoanThu);
+
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(manager);
 
 
         FloatingActionButton fab = view.findViewById(R.id.fabThemKhoanThu);
@@ -118,21 +119,9 @@ public class KhoanThuFramgent extends Fragment implements DatePickerDialog.OnDat
                 dialog1.show();
             }
         });
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(manager);
 
     }
 
-    public void onResume() {
-        super.onResume();
-        khoanThuList.clear();
-        try {
-            khoanThuList = khoanThuDao.getAllKhoanThu();
-            adapterKhoanThu.changeDataset(khoanThuDao.getAllKhoanThu());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

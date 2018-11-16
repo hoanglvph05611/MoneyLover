@@ -20,11 +20,11 @@ import java.util.List;
 
 public class AdapterKhoanThu extends RecyclerView.Adapter<AdapterKhoanThu.ViewHolder> {
     private Context context;
-    private ArrayList<KhoanThu> khoanThuArrayList;
+    private List<KhoanThu> khoanThuArrayList;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private KhoanThuDao khoanThuDao;
 
-    public AdapterKhoanThu(Context context,ArrayList<KhoanThu> khoanThuArrayList){
+    public AdapterKhoanThu(Context context,List<KhoanThu> khoanThuArrayList){
         this.context = context;
         this.khoanThuArrayList = khoanThuArrayList;
         khoanThuDao = new KhoanThuDao(context);
@@ -85,7 +85,7 @@ public class AdapterKhoanThu extends RecyclerView.Adapter<AdapterKhoanThu.ViewHo
         }
     }
     public void changeDataset(List<KhoanThu> khoanThuList){
-        this.khoanThuArrayList = (ArrayList<KhoanThu>) khoanThuList;
+        this.khoanThuArrayList = khoanThuList;
         notifyDataSetChanged();
     }
 }

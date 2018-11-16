@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -41,32 +40,35 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-    bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
-    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_container, new KhoanThuFramgent()).commit();
-}
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Fragment selectedFragment = null;
+                switch (menuItem.getItemId()) {
+                    case R.id.navigation_khoanthu:
+                        selectedFragment = new KhoanThuFramgent();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_container, selectedFragment).commit();
+                        return true;
+                    case R.id.navigation_khoanchi:
 
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    Fragment selectedFragment = null;
-                    switch (menuItem.getItemId()) {
-                        case R.id.navigation_khoanthu:
-                            selectedFragment = new KhoanThuFramgent();
-                            break;
-                        case R.id.navigation_khoanchi:
-                            selectedFragment = new KhoanChiFragment();
-                            break;
-                        case R.id.navigation_thongke:
-                            selectedFragment = new ThongKeFragment();
-                            break;
+                        selectedFragment = new KhoanChiFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_container, selectedFragment).commit();
+                        return true;
+                    case R.id.navigation_thongke:
+                        selectedFragment = new ThongKeFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_container, selectedFragment).commit();
 
-                    }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_container, selectedFragment).commit();
-                    return true;
+                        return true;
+
                 }
-            };
+                return false;
+            }
+        });
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_container, new KhoanThuFramgent()).commit();
+
+    }
+
 
     @Override
     public void onBackPressed() {

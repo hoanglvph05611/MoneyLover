@@ -30,4 +30,8 @@ Money Lover là ứng dụng được ra đời để giúp người dùng dễ 
 Với Money Lover, người dùng sẽ biết được ngân sách hiện có thể chi tiêu của mình là bao nhiêu, mình đã tiêu tiền vào những khoản nào, số tiền đã tiết kiệm được... từ đó chủ động quản lý tài chính cá nhân và thay đổi hành vi tiêu dùng phù hợp với tình hình tài chính hiện tại.
 
 Money Lover là một ứng dụng được phát triển bởi một công ty tại Việt Nam nên có giao diện hoàn toàn bằng tiếng Việt, rất dễ dàng và thuận cho người sử dụng trong nước.</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
