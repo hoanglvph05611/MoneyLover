@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:hint="nhập"
-            android:id="@+id/edTenThem"/>
+            android:id="@+id/edTenThemThu"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:hint="nhập"
-            android:id="@+id/edSoTienThem"/>
+            android:id="@+id/edSoTienThemThu"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,12 +49,11 @@
             android:layout_weight="0.75"
             android:text="Ngày"
             android:id="@+id/tvNgayThem"/>
-
         <EditText
-            android:id="@+id/edNgayThem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2" />
+            android:layout_weight="2"
+            android:id="@+id/edNgayThemThu"/>
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -62,6 +61,6 @@
             android:layout_weight="0.25"
             android:layout_marginTop="10dp"
             android:onClick="datePicker"
-            android:id="@+id/imgLich"/>
+            android:id="@+id/imgLichThu"/>
     </LinearLayout>
 </LinearLayout>

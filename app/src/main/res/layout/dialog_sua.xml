@@ -14,13 +14,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Tên:"
-            android:id="@+id/tvTenThem"/>
+            android:id="@+id/tvTenSuaThu"/>
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:hint="nhập"
-            android:id="@+id/edTenThem"/>
+            android:id="@+id/edTenSuaThu"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
