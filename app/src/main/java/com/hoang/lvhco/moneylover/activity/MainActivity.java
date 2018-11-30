@@ -1,6 +1,7 @@
-package com.hoang.lvhco.moneylover;
+package com.hoang.lvhco.moneylover.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -18,6 +19,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.hoang.lvhco.moneylover.GioiThieuFragment;
+import com.hoang.lvhco.moneylover.KhoanChiFragment;
+import com.hoang.lvhco.moneylover.KhoanThuFramgent;
+import com.hoang.lvhco.moneylover.R;
+import com.hoang.lvhco.moneylover.ThongKeFragment;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private BottomNavigationView bottomNavigationView;
@@ -28,6 +35,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Khoản thu");
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -49,13 +57,15 @@ public class MainActivity extends AppCompatActivity
                     case R.id.navigation_khoanthu:
                         selectedFragment = new KhoanThuFramgent();
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_container, selectedFragment).commit();
+                        setTitle("Khoản thu");
                         return true;
                     case R.id.navigation_khoanchi:
-
+                        setTitle("Khoản chi");
                         selectedFragment = new KhoanChiFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_container, selectedFragment).commit();
                         return true;
                     case R.id.navigation_thongke:
+                        setTitle("Thống kê");
                         selectedFragment = new ThongKeFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_container, selectedFragment).commit();
 
@@ -95,9 +105,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -122,8 +132,9 @@ public class MainActivity extends AppCompatActivity
                 bottomNavigationView.setSelectedItemId(R.id.navigation_thongke);
                 break;
             case R.id.itemGioiThieu:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_container,
-                        new GioiThieuFragment()).commit();
+//                Intent intent = new Intent(MainActivity.this,)
+//                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_container,
+//                        new GioiThieuFragment()).commit();
 
                 break;
             case R.id.itemThoat:

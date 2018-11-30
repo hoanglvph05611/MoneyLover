@@ -1,4 +1,4 @@
-package com.hoang.lvhco.moneylover;
+package com.hoang.lvhco.moneylover.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.hoang.lvhco.moneylover.R;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText edUserName;
@@ -21,11 +23,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle("Đăng nhập");
         edUserName = (EditText) findViewById(R.id.edUserName);
         edPassword = (EditText) findViewById(R.id.edPassword);
         chkRememberPass = (CheckBox) findViewById(R.id.chkRememberPass);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnCancel = (Button) findViewById(R.id.btnCancel);
+
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

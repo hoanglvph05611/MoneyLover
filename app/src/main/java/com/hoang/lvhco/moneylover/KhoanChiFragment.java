@@ -2,36 +2,51 @@ package com.hoang.lvhco.moneylover;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.hoang.lvhco.moneylover.adapter.AdapterKhoanChi;
+import com.hoang.lvhco.moneylover.dao.KhoanChiDao;
+import com.hoang.lvhco.moneylover.model.KhoanChi;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class KhoanChiFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-    private EditText edNgayChi,edTenChi,edSoTienChi;
+    private EditText edNgayChi, edTenChi, edSoTienChi;
     private ImageView imgLich;
     static private DatePickerDialog.OnDateSetListener onDateSetListener;
+
+    private RecyclerView recyclerView;
+    private AdapterKhoanChi adapterKhoanChi;
+    private KhoanChiDao khoanChiDao;
+    private List<KhoanChi> khoanChiList = new ArrayList<>();
+    private String strTenChi, strNgayChi, strTienChi;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_khoan_chi_fragment,container,false);
+        View view = inflater.inflate(R.layout.activity_khoan_chi_fragment, container, false);
         return view;
     }
 
@@ -39,32 +54,70 @@ public class KhoanChiFragment extends Fragment implements DatePickerDialog.OnDat
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        onDateSetListener= this;
+
+        onDateSetListener = this;
+        recyclerView = view.findViewById(R.id.recyclerView);
+        khoanChiDao = new KhoanChiDao(getContext());
+        try {
+            khoanChiList = khoanChiDao.getAllKhoanChi();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        adapterKhoanChi = new AdapterKhoanChi(getContext(), (ArrayList<KhoanChi>) khoanChiList);
+        recyclerView.setAdapter(adapterKhoanChi);
+
         FloatingActionButton fab = view.findViewById(R.id.fabThemKhoanChi);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                View view1 =getLayoutInflater().inflate(R.layout.dialog_them,null);
+                View view1 = getLayoutInflater().inflate(R.layout.dialog_them, null);
                 dialog.setView(view1);
                 dialog.setCancelable(false);
                 edNgayChi = view1.findViewById(R.id.edTenThem);
                 edSoTienChi = view1.findViewById(R.id.edSoTienThem);
+                edTenChi = view1.findViewById(R.id.edTenThem);
                 edNgayChi = view1.findViewById(R.id.edNgayThem);
                 imgLich = view1.findViewById(R.id.imgLich);
 
                 imgLich.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       datePicker(v);
+                        datePicker(v);
                     }
                 });
 
                 dialog.setPositiveButton("Thêm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-//                        save(edTenChi.getText().toString(), edSoTienChi.getText().toString(),edNgayChi.getText().toString());
+                        khoanChiDao = new KhoanChiDao(getContext());
+                        if (checkChi() > 0) {
+                            Toast.makeText(getContext(), "Nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                            try {
+                                KhoanChi khoanChi = new KhoanChi(1,edTenChi.getText().toString(),
+                                        Double.parseDouble(edSoTienChi.getText().toString()),
+                                        sdf.parse(edNgayChi.getText().toString()));
+
+                                if (khoanChiDao.insertKhoanChi(khoanChi) > 0) {
+//                                    Toast.makeText(getContext(), "Thêm Thành công", Toast.LENGTH_SHORT).show();
+//                                    khoanChiList.clear();
+                                    try {
+                                        khoanChiList = khoanChiDao.getAllKhoanChi();
+                                        Toast.makeText(getContext(), "Thêm Thành công", Toast.LENGTH_SHORT).show();
+                                        onResume();
+                                        // khởi tạo lại database
+                                        //
+
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } catch (ParseException e) {
+                                Log.d("Error:", e.toString());
+                            }
+                        }
+
                     }
                 });
 
@@ -79,24 +132,26 @@ public class KhoanChiFragment extends Fragment implements DatePickerDialog.OnDat
                 dialog1.show();
             }
         });
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(manager);
     }
-
-//    private void save(String string, String string1, String string2) {
-//    }
 
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Calendar cal = new GregorianCalendar(year,month,dayOfMonth);
+        Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
         setDate(cal);
     }
-    private void setDate(final Calendar calendar){
+
+    private void setDate(final Calendar calendar) {
         edNgayChi.setText(sdf.format(calendar.getTime()));
     }
+
     public void datePicker(View view) {
         DatePickerFragment fragment = new DatePickerFragment();
         fragment.show(getFragmentManager(), "date");
     }
+
     public static class DatePickerFragment extends android.support.v4.app.DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -107,5 +162,29 @@ public class KhoanChiFragment extends Fragment implements DatePickerDialog.OnDat
             return new DatePickerDialog(getActivity(),
                     onDateSetListener, year, month, day);
         }
+    }
+
+    public void onResume() {
+        super.onResume();
+
+        try {
+            khoanChiList = khoanChiDao.getAllKhoanChi();
+            adapterKhoanChi.changeDataset(khoanChiDao.getAllKhoanChi());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int checkChi() {
+        int check1 = 1;
+        strTenChi = edTenChi.getText().toString();
+        strTienChi = edSoTienChi.getText().toString();
+        strNgayChi = edNgayChi.getText().toString();
+
+        if (strNgayChi.isEmpty() || strTienChi.isEmpty() || strTenChi.isEmpty()) {
+            Toast.makeText(getContext(), "nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            check1 = -1;
+        }
+        return check1;
     }
 }

@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:hint="nhập"
+            android:inputType="number"
             android:id="@+id/edSoTienThemThu"/>
     </LinearLayout>
     <LinearLayout
@@ -61,6 +62,7 @@
             android:layout_weight="0.25"
             android:layout_marginTop="10dp"
             android:onClick="datePicker"
+            android:inputType="number"
             android:id="@+id/imgLichThu"/>
     </LinearLayout>
 </LinearLayout>

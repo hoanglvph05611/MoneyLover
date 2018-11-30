@@ -3,6 +3,7 @@ package com.hoang.lvhco.moneylover.model;
 import java.util.Date;
 
 public class KhoanThu {
+    int Id;
     String TenKhoanThu;
     double SoTienKhoanThu;
     Date NgayThu;
@@ -10,10 +11,19 @@ public class KhoanThu {
     public KhoanThu() {
     }
 
-    public KhoanThu(String tenKhoanThu, double soTienKhoanThu, Date ngayThu) {
-        this.TenKhoanThu = tenKhoanThu;
-        this.SoTienKhoanThu = soTienKhoanThu;
-        this.NgayThu = ngayThu;
+    public KhoanThu( int id,String tenKhoanThu, double soTienKhoanThu, Date ngayThu) {
+        Id = id;
+        TenKhoanThu = tenKhoanThu;
+        SoTienKhoanThu = soTienKhoanThu;
+        NgayThu = ngayThu;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
     }
 
     public String getTenKhoanThu() {
@@ -43,7 +53,8 @@ public class KhoanThu {
     @Override
     public String toString() {
         return "KhoanThu{" +
-                "TenKhoanThu='" + TenKhoanThu + '\'' +
+                "Id=" + Id +
+                ", TenKhoanThu='" + TenKhoanThu + '\'' +
                 ", SoTienKhoanThu=" + SoTienKhoanThu +
                 ", NgayThu=" + NgayThu +
                 '}';

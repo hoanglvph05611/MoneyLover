@@ -3,30 +3,46 @@ package com.hoang.lvhco.moneylover.model;
 import java.util.Date;
 
 public class KhoanChi {
-    String TenChi;
-    int SoTienChi;
+    int Id;
+    String TenKhoanChi;
+    Double SoTienKhoanChi;
     Date NgayChi;
 
-    public KhoanChi(String tenChi, int soTienChi, Date ngayChi) {
-        TenChi = tenChi;
-        SoTienChi = soTienChi;
+
+    public KhoanChi(){
+
+    }
+
+    public KhoanChi(int id, String tenKhoanChi, Double soTienKhoanChi, Date ngayChi) {
+        Id = id;
+        TenKhoanChi = tenKhoanChi;
+        SoTienKhoanChi = soTienKhoanChi;
         NgayChi = ngayChi;
     }
 
-    public String getTenChi() {
-        return TenChi;
+
+    public int getId() {
+        return Id;
     }
 
-    public void setTenChi(String tenChi) {
-        TenChi = tenChi;
+    public void setId(int id) {
+        Id = id;
     }
 
-    public int getSoTienChi() {
-        return SoTienChi;
+    public String getTenKhoanChi() {
+        return TenKhoanChi;
     }
 
-    public void setSoTienChi(int soTienChi) {
-        SoTienChi = soTienChi;
+    public void setTenKhoanChi(String tenKhoanChi) {
+        TenKhoanChi = tenKhoanChi;
+    }
+
+    public Double getSoTienKhoanChi() {
+        return SoTienKhoanChi;
+    }
+
+    public void setSoTienKhoanChi(Double soTienKhoanChi) {
+        SoTienKhoanChi = soTienKhoanChi;
     }
 
     public Date getNgayChi() {
@@ -40,8 +56,9 @@ public class KhoanChi {
     @Override
     public String toString() {
         return "KhoanChi{" +
-                "TenChi='" + TenChi + '\'' +
-                ", SoTienChi=" + SoTienChi +
+                "Id=" + Id +
+                ", TenKhoanChi='" + TenKhoanChi + '\'' +
+                ", SoTienKhoanChi=" + SoTienKhoanChi +
                 ", NgayChi=" + NgayChi +
                 '}';
     }

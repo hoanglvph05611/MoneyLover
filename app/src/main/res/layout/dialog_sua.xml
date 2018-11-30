@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:hint="nhập"
-            android:id="@+id/edSoTienThem"/>
+            android:id="@+id/edSuaSoTienThu"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,7 +51,7 @@
             android:id="@+id/tvNgayThem"/>
 
         <EditText
-            android:id="@+id/edNgayThem"
+            android:id="@+id/edSuaNgayThu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2" />
@@ -62,6 +62,6 @@
             android:layout_weight="0.25"
             android:layout_marginTop="10dp"
             android:onClick="datePicker"
-            android:id="@+id/imgLich"/>
+            android:id="@+id/imgLichSua"/>
     </LinearLayout>
 </LinearLayout>

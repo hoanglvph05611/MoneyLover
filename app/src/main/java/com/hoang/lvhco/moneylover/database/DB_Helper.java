@@ -25,7 +25,7 @@ public class DB_Helper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("Drop table if exists "+KhoanThuDao.TABLE_NAME);
-        db.execSQL("Drop table if exists "+KhoanChiDao.TABLE_NAME);
+        db.execSQL("Drop table if exists "+KhoanChiDao.TABLE_NAME1);
         onCreate(db);
     }
 }

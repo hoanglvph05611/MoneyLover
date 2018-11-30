@@ -42,32 +42,32 @@ public class KhoanThuFramgent extends Fragment implements DatePickerDialog.OnDat
     private RecyclerView recyclerView;
     private AdapterKhoanThu adapterKhoanThu;
     private KhoanThuDao khoanThuDao;
-    private List<KhoanThu> khoanThuList;
+    private List<KhoanThu> khoanThuList = new ArrayList<>();
+    private String strTen, strTien, strNgay;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_khoan_thu_framgent, container, false);
         return view;
+
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         onDateSetListener1 = this;
         recyclerView = view.findViewById(R.id.recyclerViewThu);
         khoanThuDao = new KhoanThuDao(getContext());
-        khoanThuList = new ArrayList<>();
         try {
             khoanThuList = khoanThuDao.getAllKhoanThu();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        adapterKhoanThu = new AdapterKhoanThu(getContext(), khoanThuList);
+        adapterKhoanThu = new AdapterKhoanThu(getContext(), (ArrayList<KhoanThu>) khoanThuList);
         recyclerView.setAdapter(adapterKhoanThu);
-
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(manager);
 
 
         FloatingActionButton fab = view.findViewById(R.id.fabThemKhoanThu);
@@ -93,17 +93,25 @@ public class KhoanThuFramgent extends Fragment implements DatePickerDialog.OnDat
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         khoanThuDao = new KhoanThuDao(getContext());
-
-                        try {
-                            KhoanThu khoanThu = new KhoanThu(edTenThu.getText().toString(),
-                                    Double.parseDouble(edSoTienThu.getText().toString()), sdf.parse(edNgayThu.getText().toString()));
-                            if (khoanThuDao.insertKhoanThu(khoanThu) > 0) {
-                                Toast.makeText(getContext(), "Thêm Thành công", Toast.LENGTH_SHORT).show();
-                                onResume();
-                            }
-                        } catch (ParseException e) {
-                            Log.d("Error: ", e.toString());
+                        if (checkThu() < 0) {
+                            Toast.makeText(getContext(), "Nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                         }
+                        else {
+                            try {
+
+                                KhoanThu khoanThu = new KhoanThu(1,edTenThu.getText().toString(),
+                                        Double.parseDouble(edSoTienThu.getText().toString()),
+                                        sdf.parse(edNgayThu.getText().toString()));
+
+                                if (khoanThuDao.insertKhoanThu(khoanThu) > 0) {
+                                    Toast.makeText(getContext(), "Thêm Thành công", Toast.LENGTH_SHORT).show();
+                                    onResume();
+                                }
+                            } catch (ParseException e) {
+                                Log.d("Error: ", e.toString());
+                            }
+                        }
+
                     }
                 });
 
@@ -119,9 +127,21 @@ public class KhoanThuFramgent extends Fragment implements DatePickerDialog.OnDat
                 dialog1.show();
             }
         });
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(manager);
 
     }
 
+    public void onResume() {
+        super.onResume();
+        khoanThuList.clear();
+        try {
+            khoanThuList = khoanThuDao.getAllKhoanThu();
+            adapterKhoanThu.changeDataset(khoanThuDao.getAllKhoanThu());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -148,5 +168,17 @@ public class KhoanThuFramgent extends Fragment implements DatePickerDialog.OnDat
             return new DatePickerDialog(getActivity(),
                     onDateSetListener1, year, month, day);
         }
+    }
+
+    public int checkThu() {
+        int check = 1;
+        strTien = edSoTienThu.getText().toString();
+        strTen = edTenThu.getText().toString();
+        strNgay = edSoTienThu.getText().toString();
+        if (strNgay.isEmpty() || strTien.isEmpty() || strTen.isEmpty()) {
+            Toast.makeText(getContext(), "nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            check = -1;
+        }
+        return check;
     }
 }
