@@ -93,25 +93,47 @@ public class KhoanChiDao {
         c.close();
         return thongke;
     }
-public double getKhoanChiTheoThang̣(){
+    public double getKhoanChiTheoThang̣(String number){
         double ChiThang = 0;
-        String sSQL1 = "SELECT SUM(KhoanChi.SoTienChi)FROM KhoanChi where Month(KhoanChi.NgayChi)= 12 ";
+        String sSQL1 = "SELECT SUM(SoTienChi)FROM KhoanChi where strftime('%m',NgayChi) IN('"+number+"')";
         Cursor c = db.rawQuery(sSQL1,null);
         c.moveToFirst();
-    while (c.isAfterLast() == false) {
-        ChiThang = c.getDouble(0);
-        c.moveToNext();
+        while (c.isAfterLast() == false) {
+            ChiThang = c.getDouble(0);
+            c.moveToNext();
+        }
+        c.close();
+        return ChiThang;
     }
-    c.close();
-    return ChiThang;
-}
+    /////
+    public List<KhoanChi> getKhoanChi(String number) throws ParseException {
+        String sql = "SELECT * FROM KhoanChi WHERE NgayChi LIKE '%"+number+"%'";
+        return getPr(sql);
+    }
+    public List<KhoanChi> getKhoanChi2(String number,String year) throws ParseException {
+        String sql = "SELECT * FROM KhoanChi WHERE NgayChi LIKE '%"+number+"-"+year+"%'";
+        return getPr(sql);
+    }
+    public List<KhoanChi> getPr(String sql, String...selectionArgs) throws ParseException {
+        List<KhoanChi> list = new ArrayList<>();
+        Cursor c =db.rawQuery(sql,selectionArgs);
+        while (c.moveToNext()){
+            KhoanChi kc = new KhoanChi();
+            kc.setId(c.getInt(0));
+            kc.setTenKhoanChi(c.getString(1));
+            kc.setSoTienKhoanChi(c.getDouble(2));
+            kc.setNgayChi(sdf.parse(c.getString(3)));
+            list.add(kc);
+        }
+        return list;
+    }
 public double getKhoanChiTheoNam(){
     double ChiNam = 0;
-    String sSQL1 = "SELECT SUM(KhoanChi.SoTienChi)FROM KhoanChi where Year(KhoanChi.NgayChi)= 2018 ";
+    String sSQL1 = "SELECT SUM(KhoanChi.SoTienChi)FROM KhoanChi where strftime('%Y',KhoanChi.NgayChi) = strftime('%Y','now') ";
     Cursor c = db.rawQuery(sSQL1,null);
     c.moveToFirst();
     while (c.isAfterLast() == false) {
-        ChiNam = c.getDouble(0);
+        ChiNam = c.getDouble(3);
         c.moveToNext();
     }
     c.close();

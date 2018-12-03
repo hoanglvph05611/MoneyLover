@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +23,16 @@ import com.hoang.lvhco.moneylover.dao.KhoanChiDao;
 import com.hoang.lvhco.moneylover.dao.KhoanThuDao;
 import com.hoang.lvhco.moneylover.model.KhoanThu;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 public class AdapterKhoanThu extends RecyclerView.Adapter<AdapterKhoanThu.ViewHolder> {
     static private DatePickerDialog.OnDateSetListener onDateSetListener1;
@@ -55,7 +60,8 @@ public class AdapterKhoanThu extends RecyclerView.Adapter<AdapterKhoanThu.ViewHo
     public void onBindViewHolder(@NonNull final AdapterKhoanThu.ViewHolder viewHolder, final int i) {
         final KhoanThu khoanThu = khoanThuArrayList.get(i);
         viewHolder.tvTenKhoanThu.setText(khoanThuArrayList.get(i).getTenKhoanThu());
-        viewHolder.tvSoTienThu.setText(khoanThuArrayList.get(i).getSoTienKhoanThu() + "vnđ");
+//        viewHolder.tvSoTienThu.setText(khoanThuArrayList.get(i).getSoTienKhoanThu() + " VNĐ");
+        viewHolder.tvSoTienThu.setText(formatVnCurrence(String.valueOf(khoanThuArrayList.get(i).getSoTienKhoanThu()))+"VNĐ");
         viewHolder.tvNgayThu.setText(sdf.format(khoanThuArrayList.get(i).getNgayThu()));
         viewHolder.imgKhoanThu.setImageResource(R.drawable.doanhthu);
 
@@ -86,6 +92,7 @@ public class AdapterKhoanThu extends RecyclerView.Adapter<AdapterKhoanThu.ViewHo
 
                 edSuaTen.setText(khoanThuArrayList.get(i).getTenKhoanThu());
                 edSuaSoTien.setText(khoanThuArrayList.get(i).getSoTienKhoanThu() + " VNĐ");
+//                edSuaSoTien.setText(formatVnCurrence(String.valueOf(khoanThuArrayList.get(i).getSoTienKhoanThu()))+"VNĐ");
                 edSuaNgay.setText(sdf.format(khoanThuArrayList.get(i).getNgayThu()));
                 imgSuaThu.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -166,5 +173,25 @@ public class AdapterKhoanThu extends RecyclerView.Adapter<AdapterKhoanThu.ViewHo
     public void changeDataset(List<KhoanThu> khoanThuList) {
         this.khoanThuArrayList = khoanThuList;
         notifyDataSetChanged();
+    }
+    public static String formatVnCurrence(String price) {
+
+        NumberFormat format =
+                new DecimalFormat("#,##0.00");// #,##0.00 ¤ (¤:// Currency symbol)
+        format.setCurrency(Currency.getInstance(Locale.US));//Or default locale
+
+        price = (!TextUtils.isEmpty(price)) ? price : "0";
+        price = price.trim();
+        price = format.format(Double.parseDouble(price));
+        price = price.replaceAll(",", "\\.");
+
+        if (price.endsWith(".00")) {
+            int centsIndex = price.lastIndexOf(".00");
+            if (centsIndex != -1) {
+                price = price.substring(0, centsIndex);
+            }
+        }
+        price = String.format("%s ", price);
+        return price;
     }
 }

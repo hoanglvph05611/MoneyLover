@@ -60,6 +60,8 @@ public class KhoanThuDao {
         } c.close();
         return dsKhoanThu;
     }
+
+
     // update
     public int updateKhoanThu(int Id,String TenKhoanThu, Double SoTienKhoanThu, Date NgayThu){
         ContentValues values = new ContentValues();
@@ -92,9 +94,10 @@ public double getTongKhoanThu(){
     c.close();
     return thongke;
 }
+
     public double getKhoanThuTheoThang̣(){
         double ThuThang = 0;
-        String sSQL1 = "SELECT SUM(KhoanThu.SoTienThu)FROM KhoanThu where Month(KhoanThu.NgayThu)= 12 ";
+        String sSQL1 = "SELECT SUM(SoTienThu) FROM KhoanThu WHERE strftime('%m',NgayThu) IN('\"+number+\"') ";
         Cursor c = db.rawQuery(sSQL1,null);
         c.moveToFirst();
         while (c.isAfterLast() == false) {
@@ -104,13 +107,37 @@ public double getTongKhoanThu(){
         c.close();
         return ThuThang;
     }
+    public List<KhoanThu> getKhoanThu(String number) throws ParseException {
+        String sql = "SELECT * FROM KhoanThu WHERE NgayThu LIKE '%"+number+"%'";
+        return getPr(sql);
+    }
+    public List<KhoanThu> getKhoanThu2(String number,String year) throws ParseException {
+        String sql = "SELECT * FROM KhoanThu WHERE NgayThu LIKE '%"+number+"-"+year+"%'";
+        return getPr(sql);
+    }
+
+
+    public List<KhoanThu> getPr(String sql, String...selectionArgs) throws ParseException {
+        List<KhoanThu> list = new ArrayList<>();
+        Cursor c =db.rawQuery(sql,selectionArgs);
+        while (c.moveToNext()){
+            KhoanThu kt = new KhoanThu();
+            kt.setId(c.getInt(0));
+            kt.setTenKhoanThu(c.getString(1));
+            kt.setSoTienKhoanThu(c.getDouble(2));
+            kt.setNgayThu(sdf.parse(c.getString(3)));
+            list.add(kt);
+        }
+        return list;
+    }
+
     public double getKhoanThuTheoNam(){
         double ThuNam = 0;
-        String sSQL1 = "SELECT SUM(KhoanThu.SoTienThu)FROM KhoanThu where Month(KhoanThu.NgayThu)= 2018 ";
+        String sSQL1 = "SELECT SUM(KhoanThu.SoTienThu)FROM KhoanThu where strftime('%Y',KhoanThu.NgayThu) = strftime('%Y','now') ";
         Cursor c = db.rawQuery(sSQL1,null);
         c.moveToFirst();
         while (c.isAfterLast() == false) {
-            ThuNam = c.getDouble(0);
+            ThuNam = c.getDouble(3);
             c.moveToNext();
         }
         c.close();

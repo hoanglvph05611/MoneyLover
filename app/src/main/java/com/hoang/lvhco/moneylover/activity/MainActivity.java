@@ -132,7 +132,8 @@ public class MainActivity extends AppCompatActivity
                 bottomNavigationView.setSelectedItemId(R.id.navigation_thongke);
                 break;
             case R.id.itemGioiThieu:
-//                Intent intent = new Intent(MainActivity.this,)
+                Intent intent = new Intent(MainActivity.this,GioiThieuActivity.class);
+                startActivity(intent);
 //                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_container,
 //                        new GioiThieuFragment()).commit();
 

@@ -44,6 +44,7 @@
                 android:textColor="#d32f2f"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:text="3000000 vnd"/>
 
         </LinearLayout>
