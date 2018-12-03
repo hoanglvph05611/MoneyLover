@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.hoang.lvhco.moneylover.GioiThieuFragment;
 import com.hoang.lvhco.moneylover.KhoanChiFragment;
@@ -102,8 +103,20 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+//        int id = item.getItemId();
+    switch (item.getItemId()){
+        case R.id.KhoaUngDung:
+            Toast.makeText(this, "Khóa ứng dụng", Toast.LENGTH_SHORT).show();
+            break;
+        case R.id.ThongTin:
 
+        Intent intent = new Intent(MainActivity.this,ThongTinActivity.class);
+        startActivity(intent);
+            break;
+        case R.id.PhienBan:
+            Toast.makeText(this, "Phiên bản 1.0.1", Toast.LENGTH_SHORT).show();
+            break;
+    }
         //noinspection SimplifiableIfStatement
 //        if (id == R.id.action_settings) {
 //            return true;

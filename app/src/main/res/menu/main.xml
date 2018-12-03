@@ -12,9 +12,7 @@
     <item
         android:id="@+id/ThongTin"
         android:title="Thông tin"></item>
-    <item
-        android:id="@+id/CaiDat"
-        android:title="Cài đặt"></item>
+
     <item android:id="@+id/PhienBan"
         android:title="Phiên bản : 1.0.1"></item>
 </menu>
