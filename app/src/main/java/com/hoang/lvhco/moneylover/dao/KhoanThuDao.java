@@ -63,13 +63,12 @@ public class KhoanThuDao {
 
 
     // update
-    public int updateKhoanThu(int Id,String TenKhoanThu, Double SoTienKhoanThu, Date NgayThu){
+    public int updateKhoanThu(String TenKhoanThu, Double SoTienKhoanThu, Date NgayThu){
         ContentValues values = new ContentValues();
-        values.put("Id",Id);
         values.put("TenKhoanThu",TenKhoanThu);
         values.put("SoTienThu",SoTienKhoanThu);
         values.put("NgayThu",sdf.format(NgayThu));
-        int result = db.update(TABLE_NAME,values,"Id=?",new String[]{String.valueOf(Id)});
+        int result = db.update(TABLE_NAME,values,"TenKhoanThu=?",new String[]{String.valueOf(TenKhoanThu)});
         if (result ==0){
             return -1;
         }

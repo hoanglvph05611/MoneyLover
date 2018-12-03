@@ -73,17 +73,17 @@ public class AdapterKhoanChi extends RecyclerView.Adapter<AdapterKhoanChi.ViewHo
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                final View dialog = View.inflate(context,R.layout.dialog_them,null);
+                final View dialog = View.inflate(context,R.layout.dialog_sua,null);
                 builder.setView(dialog);
 
-                final EditText edSuaTen = dialog.findViewById(R.id.edTenThem);
-                final EditText edSuaTien = dialog.findViewById(R.id.edSoTienThem);
-                final EditText edSuaNgay = dialog.findViewById(R.id.edNgayThem);
-                final ImageView imgLich = dialog.findViewById(R.id.imgLich);
+                final EditText edSuaTen = dialog.findViewById(R.id.edTenSuaThu);
+                final EditText edSuaTien = dialog.findViewById(R.id.edSuaSoTienThu);
+                final EditText edSuaNgay = dialog.findViewById(R.id.edSuaNgayThu);
+                final ImageView imgLich = dialog.findViewById(R.id.imgLichSua);
 
                 edSuaTen.setText(khoanChiList.get(i).getTenKhoanChi());
                 edSuaTien.setText(khoanChiList.get(i).getSoTienKhoanChi()+"");
-//                edSuaTien.setText(formatVnCurrence(String.valueOf(khoanChiList.get(i).getSoTienKhoanChi()))+"VNĐ");
+//                edSuaTien.setText(formatVnCurrence(String.valueOf(khoanChiList.get(i).getSoTienKhoanChi()))+"");
                 edSuaNgay.setText(sdf.format(khoanChiList.get(i).getNgayChi()));
                 imgLich.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -110,7 +110,7 @@ public class AdapterKhoanChi extends RecyclerView.Adapter<AdapterKhoanChi.ViewHo
                         builder.setCancelable(true);
                         khoanChiDao = new KhoanChiDao(context);
                         try {
-                            int result = khoanChiDao.updateKhoanChi(1,edSuaTen.getText().toString(),
+                            int result = khoanChiDao.updateKhoanChi(edSuaTen.getText().toString(),
                                     Double.parseDouble(edSuaTien.getText().toString()),
                                     sdf.parse(edSuaNgay.getText().toString()));
                             if (result>0){

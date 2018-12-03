@@ -80,18 +80,18 @@ public class AdapterKhoanThu extends RecyclerView.Adapter<AdapterKhoanThu.ViewHo
             public void onClick(View v) {
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                final View dialog = View.inflate(context, R.layout.dialog_them_thu, null);
+                final View dialog = View.inflate(context, R.layout.dialog_sua, null);
                 builder.setView(dialog);
 
 
 
-                final EditText edSuaTen = dialog.findViewById(R.id.edTenThemThu);
-                final EditText edSuaSoTien = dialog.findViewById(R.id.edSoTienThemThu);
-                final EditText edSuaNgay = dialog.findViewById(R.id.edNgayThemThu);
-                final ImageView imgSuaThu = dialog.findViewById(R.id.imgLichThu);
+                final EditText edSuaTen = dialog.findViewById(R.id.edTenSuaThu);
+                final EditText edSuaSoTien = dialog.findViewById(R.id.edSuaSoTienThu);
+                final EditText edSuaNgay = dialog.findViewById(R.id.edSuaNgayThu);
+                final ImageView imgSuaThu = dialog.findViewById(R.id.imgLichSua);
 
                 edSuaTen.setText(khoanThuArrayList.get(i).getTenKhoanThu());
-                edSuaSoTien.setText(khoanThuArrayList.get(i).getSoTienKhoanThu() + " VNĐ");
+                edSuaSoTien.setText(khoanThuArrayList.get(i).getSoTienKhoanThu() + "");
 //                edSuaSoTien.setText(formatVnCurrence(String.valueOf(khoanThuArrayList.get(i).getSoTienKhoanThu()))+"VNĐ");
                 edSuaNgay.setText(sdf.format(khoanThuArrayList.get(i).getNgayThu()));
                 imgSuaThu.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +119,7 @@ public class AdapterKhoanThu extends RecyclerView.Adapter<AdapterKhoanThu.ViewHo
 
                         khoanThuDao = new KhoanThuDao(context);
                         try {
-                            int result1 = khoanThuDao.updateKhoanThu(1,edSuaTen.getText().toString(),
+                            int result1 = khoanThuDao.updateKhoanThu(edSuaTen.getText().toString(),
                                     Double.parseDouble(edSuaSoTien.getText().toString()),
                                     sdf.parse(edSuaNgay.getText().toString()));
                             if (result1>0){

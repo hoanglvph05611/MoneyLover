@@ -60,13 +60,12 @@ public class KhoanChiDao {
         return dsKhoanChi;
     }
     // update
-    public int updateKhoanChi(int Id, String TenKhoanChi, Double SoTienChi, Date NgayChi){
+    public int updateKhoanChi(String TenKhoanChi, Double SoTienChi, Date NgayChi){
         ContentValues values = new ContentValues();
-        values.put("Id",Id);
         values.put("TenKhoanChi",TenKhoanChi);
         values.put("SoTienChi",SoTienChi);
         values.put("NgayChi",sdf.format(NgayChi));
-        int result = db.update(TABLE_NAME1,values,"Id=?",new String[]{String.valueOf(Id)});
+        int result = db.update(TABLE_NAME1,values,"TenKhoanChi=?",new String[]{String.valueOf(TenKhoanChi)});
         if (result==0){
             return -1;
         }
