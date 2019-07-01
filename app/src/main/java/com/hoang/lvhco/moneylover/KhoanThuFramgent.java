@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,8 @@ import com.hoang.lvhco.moneylover.adapter.AdapterKhoanThu;
 import com.hoang.lvhco.moneylover.dao.KhoanThuDao;
 import com.hoang.lvhco.moneylover.model.KhoanThu;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,13 +36,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 public class KhoanThuFramgent extends Fragment implements DatePickerDialog.OnDateSetListener {
     static private DatePickerDialog.OnDateSetListener onDateSetListener1;
     private EditText edTenThu, edNgayThu, edSoTienThu;
     private ImageView imgNgayThu;
 
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private RecyclerView recyclerView;
     private AdapterKhoanThu adapterKhoanThu;
     private KhoanThuDao khoanThuDao;
@@ -82,6 +87,11 @@ public class KhoanThuFramgent extends Fragment implements DatePickerDialog.OnDat
                 edSoTienThu = view.findViewById(R.id.edSoTienThemThu);
                 edNgayThu = view.findViewById(R.id.edNgayThemThu);
                 imgNgayThu = view.findViewById(R.id.imgLichThu);
+
+                edSoTienThu.addTextChangedListener(onTextChangedListener());
+                SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+                String currentDateTime = sdf1.format(new Date());
+                edNgayThu.setText(currentDateTime);
                 imgNgayThu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -100,7 +110,7 @@ public class KhoanThuFramgent extends Fragment implements DatePickerDialog.OnDat
                             try {
 
                                 KhoanThu khoanThu = new KhoanThu(1,edTenThu.getText().toString(),
-                                        Double.parseDouble(edSoTienThu.getText().toString()),
+                                        Double.parseDouble(edSoTienThu.getText().toString().replaceAll(",", "")),
                                         sdf.parse(edNgayThu.getText().toString()));
 
                                 if (khoanThuDao.insertKhoanThu(khoanThu) > 0) {
@@ -129,8 +139,48 @@ public class KhoanThuFramgent extends Fragment implements DatePickerDialog.OnDat
         });
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(manager);
-
     }
+        private TextWatcher onTextChangedListener() {
+            return new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    edSoTienThu.removeTextChangedListener(this);
+
+                    try {
+                        String originalString = s.toString();
+
+                        Long longval;
+                        if (originalString.contains(",")) {
+                            originalString = originalString.replaceAll(",", "");
+                        }
+                        longval = Long.parseLong(originalString);
+
+                        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                        formatter.applyPattern("#,###,###,###");
+                        String formattedString = formatter.format(longval);
+
+                        //setting text after format to EditText
+                        edSoTienThu.setText(formattedString);
+                        edSoTienThu.setSelection(edSoTienThu.getText().length());
+                    } catch (NumberFormatException nfe) {
+                        nfe.printStackTrace();
+                    }
+
+                    edSoTienThu.addTextChangedListener(this);
+                }
+            };
+        }
+
 
     public void onResume() {
         super.onResume();

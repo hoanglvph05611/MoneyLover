@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +60,7 @@ public class AdapterKhoanChi extends RecyclerView.Adapter<AdapterKhoanChi.ViewHo
         viewHolder.tvTenKhoanChi.setText(khoanChiList.get(i).getTenKhoanChi());
 //        viewHolder.tvSoTienChi.setText(khoanChiList.get(i).getSoTienKhoanChi()+" VNĐ");
         viewHolder.tvSoTienChi.setText(formatVnCurrence(String.valueOf(khoanChiList.get(i).getSoTienKhoanChi()))+"VNĐ");
+
         viewHolder.tvNgayChi.setText(sdf.format(khoanChiList.get(i).getNgayChi()));
         viewHolder.imgKhoanChi.setImageResource(R.drawable.chitieu1);
         viewHolder.xoaKhoanChi.setOnClickListener(new View.OnClickListener() {
@@ -170,16 +173,16 @@ public class AdapterKhoanChi extends RecyclerView.Adapter<AdapterKhoanChi.ViewHo
     public static String formatVnCurrence(String price) {
 
         NumberFormat format =
-                new DecimalFormat("#,##0.00");// #,##0.00 ¤ (¤:// Currency symbol)
+                new DecimalFormat("#,###,###,###");// #,##0.00 ¤ (¤:// Currency symbol)
         format.setCurrency(Currency.getInstance(Locale.US));//Or default locale
 
         price = (!TextUtils.isEmpty(price)) ? price : "0";
         price = price.trim();
         price = format.format(Double.parseDouble(price));
-        price = price.replaceAll(",", "\\.");
+        price = price.replaceAll(",", "\\,");
 
-        if (price.endsWith(".00")) {
-            int centsIndex = price.lastIndexOf(".00");
+        if (price.endsWith(",00")) {
+            int centsIndex = price.lastIndexOf(",00");
             if (centsIndex != -1) {
                 price = price.substring(0, centsIndex);
             }
@@ -187,4 +190,5 @@ public class AdapterKhoanChi extends RecyclerView.Adapter<AdapterKhoanChi.ViewHo
         price = String.format("%s ", price);
         return price;
     }
+
 }

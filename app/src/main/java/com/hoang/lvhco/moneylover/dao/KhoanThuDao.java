@@ -142,4 +142,17 @@ public double getTongKhoanThu(){
         c.close();
         return ThuNam;
     }
+    public int getKhoanthuthang(String month, String yeah) {
+        int khoanthuthang = 0;
+        String Sql2 = "SELECT SUM(SoTienThu) AS 'SoTienThu' FROM KHOANTHU where NgayThu LIKE'__-" + month + "-" + yeah + "' ";
+        Cursor c = db.rawQuery(Sql2, null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            khoanthuthang = c.getInt(0);
+            c.moveToNext();
+        }
+        c.close();
+        return khoanthuthang;
+    }
+
 }

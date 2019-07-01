@@ -39,7 +39,6 @@ public class ThongKeFragment extends Fragment {
     private TextView tvThang,tvNam;
     private Spinner spinnerThang, spinnerNam;
 
-    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_thong_ke_fragment,container,false);
@@ -104,9 +103,9 @@ public class ThongKeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 tvThang.setVisibility(View.VISIBLE);
-                tvNam.setVisibility(View.VISIBLE);
+                tvNam.setVisibility(View.INVISIBLE);
                 spinnerThang.setVisibility(View.VISIBLE);
-                spinnerNam.setVisibility(View.VISIBLE);
+                spinnerNam.setVisibility(View.INVISIBLE);
 
 
                 khoanThuDao = new KhoanThuDao(getActivity());
@@ -136,10 +135,6 @@ public class ThongKeFragment extends Fragment {
                 spinnerThang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(getContext(), spinnerThang.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-
-//                        selectMonth[0] = spinnerThang.getItemAtPosition(position).toString();
-//                        Log.e("chon", selectMonth[0]);
                         try {
                             double sumchi = 0;
                             double sumthu = 0;
@@ -171,52 +166,52 @@ public class ThongKeFragment extends Fragment {
 
                     }
                 });
-                List<String> list2 = new ArrayList<>();
-                list2.add("2018");
-                list2.add("2019");
-                list2.add("2020");
-                list2.add("2021");
-                list2.add("2022");
-                ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,list2);
-
-                arrayAdapter1.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-                spinnerNam.setAdapter(arrayAdapter1);
-                spinnerNam.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(getContext(), spinnerNam.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-                        try {
-                            Log.e("select", selectMonth[0]);
-                            double sumchi = 0;
-                            double sumthu = 0;
-                            KhoanChiDao chiDao  = new KhoanChiDao(getContext());
-                            KhoanThuDao thuDao  = new KhoanThuDao(getContext());
-                            List<KhoanChi> dschi = chiDao.getKhoanChi2(selectMonth[0],spinnerNam.getItemAtPosition(position).toString());
-                            List<KhoanThu> dsthu = thuDao.getKhoanThu2(selectMonth[0],spinnerNam.getItemAtPosition(position).toString());
-                            for (int i = 0; i<dschi.size(); i++){
-                                sumchi = sumchi+dschi.get(i).getSoTienKhoanChi();
-                                Log.e("test", String.valueOf(sumchi));
-                            }
-                            for (int i = 0; i<dsthu.size(); i++){
-                                sumthu = sumthu+dsthu.get(i).getSoTienKhoanThu();
-                                Log.e("test", String.valueOf(sumthu));
-                            }
-                            String chi = String.valueOf(sumchi);
-                            String thu = String.valueOf(sumthu);
-                            ChiTieuTK.setText(formatVnCurrence(String.valueOf(chi))+"VNĐ");
-                            DoanhThuTK.setText(formatVnCurrence(String.valueOf(thu))+"VNĐ");
-                            CanDoiTK.setText(formatVnCurrence(String.valueOf(sumthu-sumchi))+"VNĐ");
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-
+//                List<String> list2 = new ArrayList<>();
+//                list2.add("2018");
+//                list2.add("2019");
+//                list2.add("2020");
+//                list2.add("2021");
+//                list2.add("2022");
+//                ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,list2);
+//
+//                arrayAdapter1.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+//                spinnerNam.setAdapter(arrayAdapter1);
+//                spinnerNam.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+////                Toast.makeText(getContext(), spinnerNam.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+//                        try {
+//                            Log.e("select", selectMonth[0]);
+//                            double sumchi = 0;
+//                            double sumthu = 0;
+//                            KhoanChiDao chiDao  = new KhoanChiDao(getContext());
+//                            KhoanThuDao thuDao  = new KhoanThuDao(getContext());
+//                            List<KhoanChi> dschi = chiDao.getKhoanChi2(selectMonth[0],spinnerNam.getItemAtPosition(position).toString());
+//                            List<KhoanThu> dsthu = thuDao.getKhoanThu2(selectMonth[0],spinnerNam.getItemAtPosition(position).toString());
+//                            for (int i = 0; i<dschi.size(); i++){
+//                                sumchi = sumchi+dschi.get(i).getSoTienKhoanChi();
+//                                Log.e("test", String.valueOf(sumchi));
+//                            }
+//                            for (int i = 0; i<dsthu.size(); i++){
+//                                sumthu = sumthu+dsthu.get(i).getSoTienKhoanThu();
+//                                Log.e("test", String.valueOf(sumthu));
+//                            }
+//                            String chi = String.valueOf(sumchi);
+//                            String thu = String.valueOf(sumthu);
+//                            ChiTieuTK.setText(formatVnCurrence(String.valueOf(chi))+"VNĐ");
+//                            DoanhThuTK.setText(formatVnCurrence(String.valueOf(thu))+"VNĐ");
+//                            CanDoiTK.setText(formatVnCurrence(String.valueOf(sumthu-sumchi))+"VNĐ");
+//                        } catch (ParseException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onNothingSelected(AdapterView<?> parent) {
+//
+//                    }
+//                });
+//
             }
         });
 
@@ -256,6 +251,7 @@ public class ThongKeFragment extends Fragment {
                             for (int i = 0; i<dsthu.size(); i++){
                                 sumthu = sumthu+dsthu.get(i).getSoTienKhoanThu();
                                 Log.e("test", String.valueOf(sumthu));
+
                             }
                             String chi = String.valueOf(sumchi);
                             String thu = String.valueOf(sumthu);
@@ -265,9 +261,7 @@ public class ThongKeFragment extends Fragment {
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-
                     }
-
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
 

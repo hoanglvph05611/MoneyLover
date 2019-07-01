@@ -23,4 +23,5 @@ Money Lover là một ứng dụng được phát triển bởi một công ty t
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="facebook_app_id">303721157143244</string>
 </resources>
